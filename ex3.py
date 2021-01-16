@@ -345,11 +345,16 @@ def interpolation_comparison(encoder, decoder):
     L1_gan = output_generator[0]
     L2_gan = output_generator[1]
     L1_encoder = output_encoder[0]
-    L1_encoder = output_encoder[1]
+    L2_encoder = output_encoder[1]
 
+    show_interpolation(L1_gan, L2_gan, decoder, "gan_interpolation")
+    show_interpolation(L1_encoder, L2_encoder, decoder, "encoder_interpolation")
+
+
+def show_interpolation(L1, L2, decoder, title):
     interpolation_arr = []
     for a in range(0,11):
-        interpolation_arr.append(L1_gan*a/10 + (1-a/10)*L2_gan)
+        interpolation_arr.append(L1*a/10 + (1-a/10)*L2)
     decoder_interpolation = decoder.predict(np.array(interpolation_arr))
 
     n = 11
@@ -361,6 +366,7 @@ def interpolation_comparison(encoder, decoder):
         plt.gray()
         ax.get_xaxis().set_visible(False)
         ax.get_yaxis().set_visible(False)
+    plt.title(title, fontsize=30)
     plt.show()
 
     #     # Generate after the final epoch
@@ -371,9 +377,9 @@ def interpolation_comparison(encoder, decoder):
 
 
 
-batched_data = preprocess_data(x_train, y_train)
+# batched_data = preprocess_data(x_train, y_train)
 # train_gan(batched_data)
 #
-# interpolation_comparison(encoder, decoder)
+interpolation_comparison(encoder, decoder)
 
-train_conditional_gan(batched_data)
+# train_conditional_gan(batched_data)
